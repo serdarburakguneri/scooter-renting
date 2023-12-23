@@ -33,12 +33,32 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: user
+      POSTGRES_DB: payment
       POSTGRES_HOST: payment-postgres
     networks:
       - local
     ports:
       - "5433:5432"
+
+  rent-postgres:
+    container_name: rent-postgres
+    image: "postgres:14.4"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/rent-postgres/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rent
+      POSTGRES_HOST: rent-postgres
+    networks:
+      - local
+    ports:
+      - "5434:5432"
 
   keycloak:
     container_name: keycloak
