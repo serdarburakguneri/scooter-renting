@@ -44,7 +44,7 @@ After "docker-compose up" you should have a keycloak running.
 
 # RabbitMQ
 
-RabbitMQ is used for managing the asyn communication between modules.
+RabbitMQ is used for managing the async communication between modules.
 
 After "docker-compose up" you should have a rabbitMQ running.
 
@@ -54,12 +54,12 @@ After "docker-compose up" you should have a rabbitMQ running.
 
 # Email
 
-Email service is responsible for listening to some RabbitMQ channels ans send iformative emails to the customers.
+Email service is responsible for listening to some RabbitMQ channels and sending informative emails to the customers.
 
 # Payment
 
 Payment service will simulate payments for rides. Pricing is also a part of this service, to keep the solution simple.
 
-# Ride
+# Rent
 
-Ride service is responsible for listing, unlocking and locking the scooters and manage the rides. 
+Rent service is responsible for listing, unlocking and locking the scooters and manage the rental history. 
