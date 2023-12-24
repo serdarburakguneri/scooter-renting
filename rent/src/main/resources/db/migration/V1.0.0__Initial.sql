@@ -1,12 +1,13 @@
 CREATE TABLE scooter
 (
-    id            UUID PRIMARY KEY NOT NULL,
-    serial_number VARCHAR(255)     NOT NULL,
-    brand         VARCHAR(255)     NOT NULL,
-    model         VARCHAR(255)     NOT NULL,
-    status        VARCHAR(255)     NOT NULL,
-    battery_level INTEGER,
-    location      VARCHAR(255)     NOT NULL
+    id                 UUID PRIMARY KEY NOT NULL,
+    serial_number      VARCHAR(255)     NOT NULL,
+    brand              VARCHAR(255)     NOT NULL,
+    model              VARCHAR(255)     NOT NULL,
+    status             VARCHAR(255)     NOT NULL,
+    battery_level      DECIMAL(3, 3),
+    location_latitude  VARCHAR(255),
+    location_longitude VARCHAR(255)
 );
 
 CREATE TABLE rental_history
@@ -16,6 +17,6 @@ CREATE TABLE rental_history
     user_id    UUID             NOT NULL,
     start_date TIMESTAMP        NOT NULL,
     end_date   TIMESTAMP,
-    total_cost DECIMAL(10, 2),
+    total_cost DECIMAL(10, 5),
     FOREIGN KEY (scooter_id) REFERENCES scooter (id)
 )

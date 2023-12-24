@@ -1,11 +1,14 @@
 package entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -44,12 +47,10 @@ public class Scooter {
     private String status;
 
     @Column(name = "battery_level")
-    private int batteryLevel;
+    private BigDecimal batteryLevel;
 
-    @NotNull
-    @NotBlank
-    @Column(name = "location")
-    private String location;
+    @Embedded
+    private Location location;
 
     public UUID getId() {
         return id;
@@ -71,12 +72,35 @@ public class Scooter {
         return status;
     }
 
-    public int getBatteryLevel() {
+    public BigDecimal getBatteryLevel() {
         return batteryLevel;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
+    }
+
+
+    @Embeddable
+    public static class Location {
+
+        @NotNull
+        @NotBlank
+        @Column(name = "location_latitude")
+        private String latitude;
+
+        @NotNull
+        @NotBlank
+        @Column(name = "location_longitude")
+        private String longitude;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
     }
 
     public static class Builder {
@@ -107,13 +131,15 @@ public class Scooter {
             return this;
         }
 
-        public Builder withBatteryLevel(int batteryLevel) {
+        public Builder withBatteryLevel(BigDecimal batteryLevel) {
             this.scooter.batteryLevel = batteryLevel;
             return this;
         }
 
-        public Builder withLocation(String location) {
-            this.scooter.location = location;
+        public Builder withLocation(String latitude, String longitude) {
+            this.scooter.location = new Location();
+            this.scooter.location.latitude = latitude;
+            this.scooter.location.longitude = longitude;
             return this;
         }
 
