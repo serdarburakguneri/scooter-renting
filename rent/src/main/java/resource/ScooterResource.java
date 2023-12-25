@@ -10,11 +10,14 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import java.util.List;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -35,6 +38,26 @@ public class ScooterResource {
     @Inject
     public ScooterResource(ScooterService scooterService) {
         this.scooterService = scooterService;
+    }
+
+    @WithTransaction
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    @Operation(
+            summary = "List all scooters",
+            description = "List all scooters"
+    )
+    @APIResponse(responseCode = "200", description = "Ok", content = @Content(
+            schema = @Schema(type = SchemaType.ARRAY, implementation = ScooterDTO.class))
+    )
+    @APIResponse(responseCode = "401", description = "Unauthorized")
+    @APIResponse(responseCode = "403", description = "Forbidden")
+    @Tag(name = "Scooter")
+    @RolesAllowed({"admin", "user"})
+    public Uni<RestResponse<List<ScooterDTO>>> list() {
+        return scooterService.list()
+                .onItem()
+                .transform(scooters -> RestResponse.status(Status.OK, scooters));
     }
 
     @WithTransaction
@@ -68,6 +91,8 @@ public class ScooterResource {
             schema = @Schema(implementation = ScooterDTO.class))
     )
     @APIResponse(responseCode = "400", description = "Bad request")
+    @APIResponse(responseCode = "401", description = "Unauthorized")
+    @APIResponse(responseCode = "403", description = "Forbidden")
     @Tag(name = "Scooter")
     @RolesAllowed("admin")
     public Uni<RestResponse<ScooterDTO>> create(@Valid ScooterCreationDTO request) {

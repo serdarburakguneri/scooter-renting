@@ -8,6 +8,8 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
+import java.util.List;
+import java.util.stream.Collectors;
 import repository.ScooterRepository;
 
 @ApplicationScoped
@@ -29,5 +31,18 @@ public class ScooterService {
                 .replaceWith(ScooterAdapter.fromScooterCreationDTO(request))
                 .call(scooterRepository::persist)
                 .map(ScooterDTOAdapter::fromScooter);
+    }
+
+    //TODO: filtering is a good idea
+    public Uni<List<ScooterDTO>> list() {
+        return scooterRepository
+                .findAll()
+                .list()
+                .onItem()
+                .transform(
+                        scooters -> scooters.stream()
+                                .map(ScooterDTOAdapter::fromScooter)
+                                .collect(Collectors.toList()));
+
     }
 }

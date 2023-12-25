@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
 @Tag("IntegrationTest")
@@ -124,6 +125,48 @@ public class ScooterResourceTest {
                 .body("serialNumber", is(serialNumber))
                 .body("brand", is(brand))
                 .body("model", is(model));
+    }
+
+    @Test
+    @DisplayName("GET should return 401 for non authenticated requests")
+    @Order(5)
+    void testListScootersWithoutAuthentication() {
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .get("/scooter")
+                .then()
+                .statusCode(StatusCode.UNAUTHORIZED);
+    }
+
+    @Test
+    @DisplayName("GET should return 200 for admins")
+    @TestSecurity(user = "testUser", roles = {"admin"})
+    @Order(6)
+    void testListScootersForAdmins() {
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .get("/scooter")
+                .then()
+                .statusCode(StatusCode.OK)
+                .body("size()", equalTo(1));
+
+    }
+
+    @Test
+    @DisplayName("GET should return 200 for regular users")
+    @TestSecurity(user = "testUser", roles = {"user"})
+    @Order(7)
+    void testListScootersForRegularUsers() {
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .get("/scooter")
+                .then()
+                .statusCode(StatusCode.OK)
+                .body("size()", equalTo(1));
+
     }
 
 }
