@@ -3,7 +3,9 @@ package resource;
 import dto.ScooterCreationDTO;
 import dto.ScooterDTO;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -25,6 +27,7 @@ import service.ScooterService;
 
 @Path("/scooter")
 @RequestScoped
+@Authenticated
 public class ScooterResource {
 
     private final ScooterService scooterService;
@@ -66,6 +69,7 @@ public class ScooterResource {
     )
     @APIResponse(responseCode = "400", description = "Bad request")
     @Tag(name = "Scooter")
+    @RolesAllowed("admin")
     public Uni<RestResponse<ScooterDTO>> create(@Valid ScooterCreationDTO request) {
         return scooterService.create(request)
                 .onItem()
