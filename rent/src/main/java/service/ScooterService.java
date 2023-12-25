@@ -7,6 +7,7 @@ import dto.ScooterDTO;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import repository.ScooterRepository;
 
@@ -25,7 +26,7 @@ public class ScooterService {
                 .findBySerialNumber(request.serialNumber())
                 .onItem()
                 .ifNotNull()
-                .failWith(new NotFoundException("A scooter with provided serialNumber exists!"))
+                .failWith(new BadRequestException("A scooter with provided serialNumber exists!"))
                 .replaceWith(ScooterAdapter.fromScooterCreationDTO(request))
                 .call(scooterRepository::persist)
                 .map(ScooterDTOAdapter::fromScooter);
