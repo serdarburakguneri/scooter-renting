@@ -2,6 +2,7 @@ package resource;
 
 import dto.ScooterCreationDTO;
 import dto.ScooterDTO;
+import entity.UserRole;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
@@ -53,7 +54,7 @@ public class ScooterResource {
     @APIResponse(responseCode = "401", description = "Unauthorized")
     @APIResponse(responseCode = "403", description = "Forbidden")
     @Tag(name = "Scooter")
-    @RolesAllowed({"admin", "user"})
+    @RolesAllowed({UserRole.ADMIN, UserRole.USER})
     public Uni<RestResponse<List<ScooterDTO>>> list() {
         return scooterService.list()
                 .onItem()
@@ -94,7 +95,7 @@ public class ScooterResource {
     @APIResponse(responseCode = "401", description = "Unauthorized")
     @APIResponse(responseCode = "403", description = "Forbidden")
     @Tag(name = "Scooter")
-    @RolesAllowed("admin")
+    @RolesAllowed(UserRole.ADMIN)
     public Uni<RestResponse<ScooterDTO>> create(@Valid ScooterCreationDTO request) {
         return scooterService.create(request)
                 .onItem()

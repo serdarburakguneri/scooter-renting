@@ -1,5 +1,6 @@
 package resource;
 
+import entity.UserRole;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.vertx.core.json.JsonObject;
@@ -28,7 +29,7 @@ public class ScooterResourceTest {
     @ParameterizedTest
     @MethodSource("getBadRequestInputs")
     @DisplayName("POST should return 400 when payload is not valid")
-    @TestSecurity(user = "testUser", roles = {"admin"})
+    @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     @Order(1)
     void testCreateScooterWhenSerialNumberIsEmpty(String serialNumber, String brand, String model) {
 
@@ -58,7 +59,7 @@ public class ScooterResourceTest {
 
     @Test
     @DisplayName("POST should return 403 for non admin users")
-    @TestSecurity(user = "testUser", roles = {"user"})
+    @TestSecurity(user = "testUser", roles = {UserRole.USER})
     @Order(2)
     void testCreateScooterForRegularUsers() {
         var serialNumber = "1234ABCD";
@@ -103,7 +104,7 @@ public class ScooterResourceTest {
 
     @Test
     @DisplayName("POST should return 201")
-    @TestSecurity(user = "testUser", roles = {"admin"})
+    @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     @Order(4)
     void testCreateScooter() {
         var serialNumber = "1234ABCD";
@@ -141,7 +142,7 @@ public class ScooterResourceTest {
 
     @Test
     @DisplayName("GET should return 200 for admins")
-    @TestSecurity(user = "testUser", roles = {"admin"})
+    @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     @Order(6)
     void testListScootersForAdmins() {
         given()
@@ -156,7 +157,7 @@ public class ScooterResourceTest {
 
     @Test
     @DisplayName("GET should return 200 for regular users")
-    @TestSecurity(user = "testUser", roles = {"user"})
+    @TestSecurity(user = "testUser", roles = {UserRole.USER})
     @Order(7)
     void testListScootersForRegularUsers() {
         given()
