@@ -53,6 +53,15 @@ After "docker-compose up" you should have a rabbitMQ running.
 
 ![image info](documentation/rabbitmq_admin.png)
 
+# Kernel
+
+This is the main service responsible for registering, listing, unlocking and locking the scooters and manage the rental history. 
+As application 
+
+# IotServer
+
+IOT server is responsible for communication with the scooters in the field. This is the service where I will simulate getting scooter information and send them some commands such as locking and unlocking etc.
+
 # Email
 
 Email service is responsible for listening to some RabbitMQ channels and sending informative emails to the customers.
@@ -60,9 +69,4 @@ Email service is responsible for listening to some RabbitMQ channels and sending
 # Payment
 
 Payment service will simulate payments for rides. Pricing is also a part of this service, to keep the solution simple.
-
-# Kernel
-
-This is the main service responsible for registering, listing, unlocking and locking the scooters and manage the rental history. 
-As application 
 

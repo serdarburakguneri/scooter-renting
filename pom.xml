@@ -10,5 +10,6 @@
     <module>payment</module>
     <module>kernel</module>
     <module>email</module>
+    <module>iotserver</module>
   </modules>
 </project>
