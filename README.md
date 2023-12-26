@@ -55,8 +55,7 @@ After "docker-compose up" you should have a rabbitMQ running.
 
 # Kernel
 
-This is the main service responsible for registering, listing, unlocking and locking the scooters and manage the rental history. 
-As application 
+This is the main service responsible for registering, listing, unlocking and locking the scooters and managing the rental history. 
 
 # IotServer
 
@@ -70,3 +69,16 @@ Email service is responsible for listening to some RabbitMQ channels and sending
 
 Payment service will simulate payments for rides. Pricing is also a part of this service, to keep the solution simple.
 
+# Use cases
+
+These are the things I am thinking of implementing:
+
+* An admin can register a new scooter to the system.
+* An admin can modify the scooter registered.
+* A user can list all scooters. Each scooter has location information, so it would be nice to filter
+scooters within a geographic area.
+* A user can rent and unlock a scooter.
+* A user can stop the ride and lock the scooter.
+* Whenever a ride ends, the payment service handles the transaction.
+* Whenever a ride starts and ends, IOT server tells the scooter to be available or not.
+* Each scooter send info like battery level, location and current speed etc to the IOT server.
