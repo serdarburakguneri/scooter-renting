@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>rent</artifactId>
+  <artifactId>kernel</artifactId>
 
   <properties>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>

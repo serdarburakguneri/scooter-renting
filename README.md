@@ -4,6 +4,7 @@ I am starting a hobby project that simulates a scooter renting service just for 
 
 I want to create myself some distributed system problems and solve them by playing with rabbitMQ.
 
+Each app have more information in their readme files.
 
 The image below shows a high level architecture.
 
@@ -60,6 +61,8 @@ Email service is responsible for listening to some RabbitMQ channels and sending
 
 Payment service will simulate payments for rides. Pricing is also a part of this service, to keep the solution simple.
 
-# Rent
+# Kernel
 
-Rent service is responsible for listing, unlocking and locking the scooters and manage the rental history. 
+This is the main service responsible for registering, listing, unlocking and locking the scooters and manage the rental history. 
+As application 
+
