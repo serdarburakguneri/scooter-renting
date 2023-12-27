@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -44,6 +45,11 @@ public class RentalHistory {
     @Column(name = "total_cost")
     private BigDecimal totalCost;
 
+    @NotNull
+    @NotBlank
+    @Column(name = "status")
+    private String status;
+
 
     public UUID getId() {
         return id;
@@ -67,6 +73,10 @@ public class RentalHistory {
 
     public BigDecimal getTotalCost() {
         return totalCost;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public static class Builder {
@@ -99,6 +109,11 @@ public class RentalHistory {
 
         public Builder withTotalCost(BigDecimal totalCost) {
             this.rentalHistory.totalCost = totalCost;
+            return this;
+        }
+
+        public Builder withStatus(String status) {
+            this.rentalHistory.status = status;
             return this;
         }
 

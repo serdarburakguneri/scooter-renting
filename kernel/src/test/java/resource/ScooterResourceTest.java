@@ -31,7 +31,7 @@ public class ScooterResourceTest {
     @DisplayName("POST should return 400 when payload is not valid")
     @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     @Order(1)
-    void testCreateScooterWhenSerialNumberIsEmpty(String serialNumber, String brand, String model) {
+    void testCreateScooterWhenPayloadIsNotValid(String serialNumber, String brand, String model) {
 
         var requestBody = new JsonObject()
                 .put("serialNumber", serialNumber)

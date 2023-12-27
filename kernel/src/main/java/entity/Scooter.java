@@ -80,6 +80,13 @@ public class Scooter {
         return location;
     }
 
+    public boolean isAvailable() {
+        return this.status.equals(ScooterStatus.AVAILABLE);
+    }
+
+    public void requestUnLock() {
+        this.status = ScooterStatus.REQUESTED_FOR_RENT;
+    }
 
     @Embeddable
     public static class Location {

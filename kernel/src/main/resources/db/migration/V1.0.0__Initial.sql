@@ -18,5 +18,6 @@ CREATE TABLE rental_history
     start_date TIMESTAMP        NOT NULL,
     end_date   TIMESTAMP,
     total_cost DECIMAL(10, 5),
+    status     VARCHAR(255)     NOT NULL,
     FOREIGN KEY (scooter_id) REFERENCES scooter (id)
 )

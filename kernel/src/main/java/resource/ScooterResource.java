@@ -1,5 +1,6 @@
 package resource;
 
+import adapter.ScooterDTOAdapter;
 import dto.ScooterCreationDTO;
 import dto.ScooterDTO;
 import entity.UserRole;
@@ -17,6 +18,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -58,6 +60,11 @@ public class ScooterResource {
     public Uni<RestResponse<List<ScooterDTO>>> list() {
         return scooterService.list()
                 .onItem()
+                .transform(
+                        scooters -> scooters.stream()
+                                .map(ScooterDTOAdapter::fromScooter)
+                                .collect(Collectors.toList()))
+                .onItem()
                 .transform(scooters -> RestResponse.status(Status.OK, scooters));
     }
 
@@ -82,7 +89,7 @@ public class ScooterResource {
                                                     {
                                                         "serialNumber": "ABC12345",
                                                         "brand": "Bird",
-                                                        "model": "One"                                       
+                                                        "model": "One"                                
                                                     }
                                                     """
                             )
@@ -98,6 +105,7 @@ public class ScooterResource {
     @RolesAllowed(UserRole.ADMIN)
     public Uni<RestResponse<ScooterDTO>> create(@Valid ScooterCreationDTO request) {
         return scooterService.create(request)
+                .map(ScooterDTOAdapter::fromScooter)
                 .onItem()
                 .transform(scooterAdded -> RestResponse.status(Status.CREATED, scooterAdded));
     }
