@@ -34,10 +34,10 @@ public class RentServiceTest {
     void requestRenting() {
 
         var scooterId = UUID.randomUUID();
-        var userId = UUID.randomUUID();
-        var request = new RentRequestDTO(scooterId, userId);
+        var userId = UUID.randomUUID().toString();
+        var request = new RentRequestDTO(scooterId);
 
-        var subscriber = rentService.requestRenting(request)
+        var subscriber = rentService.requestRenting(request, userId)
                 .subscribe()
                 .withSubscriber(UniAssertSubscriber.create());
 

@@ -80,6 +80,7 @@ public class ScooterService {
         return scooterMessageProducer.scooterUnlockRequested(scooterDTO).replaceWith(scooter);
     }
 
+
     //TODO: filtering is a good idea
     public Uni<List<Scooter>> list() {
         return scooterRepository

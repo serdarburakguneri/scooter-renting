@@ -10,7 +10,13 @@ import org.jboss.resteasy.reactive.common.NotImplementedYet;
 public class ScooterMessageConsumer {
 
     @Incoming("scooter-unlocked")
-    public void consume(JsonObject message) {
+    public void consumeUnlocked(JsonObject message) {
+        var scooter = message.mapTo(ScooterDTO.class);
+        throw new NotImplementedYet();
+    }
+
+    @Incoming("scooter-available")
+    public void consumeAvailable(JsonObject message) {
         var scooter = message.mapTo(ScooterDTO.class);
         throw new NotImplementedYet();
     }

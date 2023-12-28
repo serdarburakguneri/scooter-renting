@@ -31,7 +31,7 @@ public class RentalHistory {
 
     @NotNull
     @Column(name = "user_id")
-    private UUID userId;
+    private String userId;
 
     @NotNull
     @Column(name = "start_date")
@@ -59,7 +59,7 @@ public class RentalHistory {
         return scooterId;
     }
 
-    public UUID getUserId() {
+    public String getUserId() {
         return userId;
     }
 
@@ -92,7 +92,7 @@ public class RentalHistory {
             return this;
         }
 
-        public Builder withUserId(UUID userId) {
+        public Builder withUserId(String userId) {
             this.rentalHistory.userId = userId;
             return this;
         }

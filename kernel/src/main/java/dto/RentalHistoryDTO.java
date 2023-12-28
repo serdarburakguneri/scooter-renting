@@ -7,7 +7,7 @@ import java.util.UUID;
 public record RentalHistoryDTO(
         UUID id,
         UUID scooterId,
-        UUID userId,
+        String userId,
         Date startDate,
         Date endDate,
         BigDecimal totalCost) {

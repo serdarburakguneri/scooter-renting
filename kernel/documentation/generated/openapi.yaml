@@ -118,12 +118,9 @@ components:
     RentRequestDTO:
       required:
       - scooterId
-      - userId
       type: object
       properties:
         scooterId:
-          $ref: '#/components/schemas/UUID'
-        userId:
           $ref: '#/components/schemas/UUID'
     RentalHistoryDTO:
       type: object
@@ -133,7 +130,7 @@ components:
         scooterId:
           $ref: '#/components/schemas/UUID'
         userId:
-          $ref: '#/components/schemas/UUID'
+          type: string
         startDate:
           $ref: '#/components/schemas/Date'
         endDate:

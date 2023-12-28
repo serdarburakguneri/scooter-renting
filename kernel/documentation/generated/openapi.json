@@ -169,13 +169,10 @@
         }
       },
       "RentRequestDTO" : {
-        "required" : [ "scooterId", "userId" ],
+        "required" : [ "scooterId" ],
         "type" : "object",
         "properties" : {
           "scooterId" : {
-            "$ref" : "#/components/schemas/UUID"
-          },
-          "userId" : {
             "$ref" : "#/components/schemas/UUID"
           }
         }
@@ -190,7 +187,7 @@
             "$ref" : "#/components/schemas/UUID"
           },
           "userId" : {
-            "$ref" : "#/components/schemas/UUID"
+            "type" : "string"
           },
           "startDate" : {
             "$ref" : "#/components/schemas/Date"

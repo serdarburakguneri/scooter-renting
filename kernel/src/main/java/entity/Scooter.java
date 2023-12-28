@@ -28,7 +28,7 @@ public class Scooter {
 
     @NotNull
     @NotBlank
-    @Column(name = "serial_number")
+    @Column(name = "serial_number", unique = true)
     private String serialNumber;
 
     @NotNull

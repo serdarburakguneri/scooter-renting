@@ -6,6 +6,7 @@ import dto.RentalHistoryDTO;
 import entity.UserRole;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.security.Authenticated;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
@@ -33,6 +34,9 @@ import service.RentService;
 public class RentResource {
 
     private final RentService rentService;
+
+    @Inject
+    SecurityIdentity securityIdentity;
 
     @Inject
     public RentResource(RentService rentService) {
@@ -74,7 +78,8 @@ public class RentResource {
     @Tag(name = "Scooter")
     @RolesAllowed({UserRole.ADMIN, UserRole.USER})
     public Uni<RestResponse<RentalHistoryDTO>> requestRenting(@Valid RentRequestDTO request) {
-        return rentService.requestRenting(request)
+        var userId = securityIdentity.getPrincipal().getName();
+        return rentService.requestRenting(request, userId)
                 .map(RentalHistoryDTOAdapter::fromRentalHistory)
                 .onItem()
                 .transform(rentalHistory -> RestResponse.status(Status.OK, rentalHistory));

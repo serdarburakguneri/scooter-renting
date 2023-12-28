@@ -14,7 +14,7 @@ CREATE TABLE rental_history
 (
     id         UUID PRIMARY KEY NOT NULL,
     scooter_id UUID             NOT NULL,
-    user_id    UUID             NOT NULL,
+    user_id    VARCHAR(255)     NOT NULL,
     start_date TIMESTAMP        NOT NULL,
     end_date   TIMESTAMP,
     total_cost DECIMAL(10, 5),
