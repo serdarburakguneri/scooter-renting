@@ -81,11 +81,11 @@ public class Scooter {
     }
 
     public boolean isAvailable() {
-        return this.status.equals(ScooterStatus.AVAILABLE);
+        return this.status.equals(ScooterStatus.AVAILABLE.name());
     }
 
     public void requestUnLock() {
-        this.status = ScooterStatus.REQUESTED_FOR_RENT;
+        this.status = ScooterStatus.REQUESTED_FOR_RENT.name();
     }
 
     @Embeddable

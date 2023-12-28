@@ -25,7 +25,7 @@ public class RentService {
         var rentalHistory = new RentalHistory.Builder()
                 .withScooterId(request.scooterId())
                 .withUserId(userId)
-                .withStatus(RentalStatus.REQUESTED)
+                .withStatus(RentalStatus.REQUESTED.name())
                 .build();
 
         return scooterService.validateUnlocking(request.scooterId())

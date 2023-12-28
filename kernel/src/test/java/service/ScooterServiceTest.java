@@ -14,11 +14,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import producer.ScooterMessageProducer;
 import repository.ScooterRepository;
 
+import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -49,7 +50,7 @@ public class ScooterServiceTest {
                 .withSerialNumber(request.serialNumber())
                 .withBrand(request.brand())
                 .withModel(request.model())
-                .withStatus(ScooterStatus.OUT_OF_SERVICE)
+                .withStatus(ScooterStatus.OUT_OF_SERVICE.name())
                 .withBatteryLevel(BigDecimal.ZERO)
                 .withLocation("0", "0")
                 .build();
@@ -81,7 +82,7 @@ public class ScooterServiceTest {
                 .withSerialNumber("1234ABC")
                 .withBrand("Bird")
                 .withModel("One")
-                .withStatus(ScooterStatus.AVAILABLE)
+                .withStatus(ScooterStatus.AVAILABLE.name())
                 .withBatteryLevel(BigDecimal.valueOf(90))
                 .withLocation("0", "0")
                 .build();
@@ -122,7 +123,7 @@ public class ScooterServiceTest {
                 .withSerialNumber("1234ABC")
                 .withBrand("Bird")
                 .withModel("One")
-                .withStatus(ScooterStatus.AVAILABLE)
+                .withStatus(ScooterStatus.AVAILABLE.name())
                 .withBatteryLevel(BigDecimal.valueOf(ScooterService.MIN_BATTERY_LEVEL_FOR_RIDE - 1L))
                 .withLocation("0", "0")
                 .build();
@@ -139,8 +140,8 @@ public class ScooterServiceTest {
 
     @DisplayName("It should fail if scooter is not available")
     @ParameterizedTest
-    @ValueSource(strings = {ScooterStatus.OUT_OF_SERVICE, ScooterStatus.IN_USE, ScooterStatus.REQUESTED_FOR_RENT})
-    void validateUnlockingWhenScooterIsNotAvailable(String scooterStatus) {
+    @EnumSource(value = ScooterStatus.class, mode = EXCLUDE, names = {"AVAILABLE"})
+    void validateUnlockingWhenScooterIsNotAvailable(ScooterStatus scooterStatus) {
 
         var scooterId = UUID.randomUUID();
 
@@ -148,7 +149,7 @@ public class ScooterServiceTest {
                 .withSerialNumber("1234ABC")
                 .withBrand("Bird")
                 .withModel("One")
-                .withStatus(scooterStatus)
+                .withStatus(scooterStatus.name())
                 .withBatteryLevel(BigDecimal.valueOf(90))
                 .withLocation("0", "0")
                 .build();
@@ -173,7 +174,7 @@ public class ScooterServiceTest {
                 .withSerialNumber("1234ABC")
                 .withBrand("Bird")
                 .withModel("One")
-                .withStatus(ScooterStatus.AVAILABLE)
+                .withStatus(ScooterStatus.AVAILABLE.name())
                 .withBatteryLevel(BigDecimal.valueOf(90))
                 .withLocation("0", "0")
                 .build();
@@ -189,7 +190,7 @@ public class ScooterServiceTest {
 
         var persistingCaptor = ArgumentCaptor.forClass(Scooter.class);
         verify(scooterRepository, times(1)).persist(persistingCaptor.capture());
-        assertEquals(persistingCaptor.getValue().getStatus(), ScooterStatus.REQUESTED_FOR_RENT);
+        assertEquals(persistingCaptor.getValue().getStatus(), ScooterStatus.REQUESTED_FOR_RENT.name());
 
         var messagingCaptor = ArgumentCaptor.forClass(ScooterDTO.class);
         verify(scooterMessageProducer, times(1)).scooterUnlockRequested(messagingCaptor.capture());

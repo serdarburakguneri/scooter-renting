@@ -12,7 +12,7 @@ public class ScooterAdapter {
                 .withSerialNumber(request.serialNumber())
                 .withBrand(request.brand())
                 .withModel(request.model())
-                .withStatus(ScooterStatus.OUT_OF_SERVICE)
+                .withStatus(ScooterStatus.OUT_OF_SERVICE.name())
                 .withBatteryLevel(BigDecimal.ZERO)
                 .withLocation("0", "0")
                 .build();
