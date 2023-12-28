@@ -1,17 +1,23 @@
-# general info
+# General Info
 
 I am starting a hobby project that simulates a scooter renting service just for fun!
 
 I want to create myself some distributed system problems and solve them by playing with rabbitMQ.
 
-Each app have more information in their readme files.
+Each app have more information in their readme files. OpenAPI documents can also be found in the documentation folders.
+With swagger editor, it should be easier to understand how REST endpoints work.
+
+
+![image info](documentation/how_to_use_openapi_docs.png)
+
+# Architecture
 
 The image below shows a high level architecture.
 
  ![image info](documentation/scooter_service.drawio.png)
 
 
-# starting the apps
+# Starting the apps
 
 There is a docker-compose.yml file under the scripts/docker-compose directory. I am thinking of 
 having all necessary apps there to simulate the solution.
