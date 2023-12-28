@@ -14,10 +14,10 @@ As configured in application.properties, it can be found in target/generated dir
 
 <br />
 
-[openapi.json](target/generated/openapi.json)
+[openapi.json](documentation/generated/openapi.json)
 
 <br />
 
-[openapi.yaml](target/generated/openapi.yaml)
+[openapi.yaml](documentation/generated/openapi.yaml)
 
 Alternatively, running the application will let you host the swagger file under /swagger route.
