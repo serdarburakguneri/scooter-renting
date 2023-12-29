@@ -13,7 +13,8 @@ public class ScooterDTOAdapter {
                 scooter.getModel(),
                 scooter.getBatteryLevel(),
                 new LocationDTO(scooter.getLocation().getLatitude(),
-                        scooter.getLocation().getLongitude()));
+                        scooter.getLocation().getLongitude()),
+                scooter.getStatus());
     }
 
 }

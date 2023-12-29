@@ -8,6 +8,7 @@ public record ScooterDTO(UUID id,
                          String brand,
                          String model,
                          BigDecimal batteryLevel,
-                         LocationDTO locationDTO) {
+                         LocationDTO locationDTO,
+                         String status) {
 
 }

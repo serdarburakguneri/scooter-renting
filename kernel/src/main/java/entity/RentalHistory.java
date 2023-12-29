@@ -33,15 +33,12 @@ public class RentalHistory {
     @Column(name = "user_id")
     private String userId;
 
-    @NotNull
     @Column(name = "start_date")
     private Date startDate;
 
-    @NotNull
     @Column(name = "end_date")
     private Date endDate;
 
-    @NotNull
     @Column(name = "total_cost")
     private BigDecimal totalCost;
 

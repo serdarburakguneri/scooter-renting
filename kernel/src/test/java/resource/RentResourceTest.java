@@ -73,7 +73,7 @@ public class RentResourceTest extends IntegrationTest {
     @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     void testRequestRenting() {
 
-        var scooterCreationRequest = ScooterPayload.generate();
+        var scooterCreationRequest = ScooterPayload.create();
 
         var scooterCreated = given()
                 .when()
@@ -85,6 +85,16 @@ public class RentResourceTest extends IntegrationTest {
                 .extract()
                 .as(ScooterDTO.class);
 
+        var scooterPatchRequest = ScooterPayload.patch();
+
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(scooterPatchRequest.toString())
+                .patch("scooter/" + scooterCreated.id())
+                .then()
+                .statusCode(StatusCode.OK);
+
         var rentRequest = RentPayload.generate(scooterCreated.id());
 
         given()
@@ -94,9 +104,7 @@ public class RentResourceTest extends IntegrationTest {
                 .post("/rent")
                 .then()
                 .statusCode(StatusCode.OK)
-                .body("id", is(scooterCreated.id()));
-
-        //TODO: need to implement status updating first. By default, scooters are out of service when they are created
+                .body("scooterId", is(scooterCreated.id().toString()));
     }
 
 }

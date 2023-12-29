@@ -3,7 +3,9 @@ package service;
 import adapter.ScooterAdapter;
 import adapter.ScooterDTOAdapter;
 import dto.ScooterCreationDTO;
+import dto.ScooterPatchDTO;
 import entity.Scooter;
+import entity.ScooterStatus;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -78,6 +80,17 @@ public class ScooterService {
     private Uni<Scooter> publishUnlockRequested(Scooter scooter) {
         var scooterDTO = ScooterDTOAdapter.fromScooter(scooter);
         return scooterMessageProducer.scooterUnlockRequested(scooterDTO).replaceWith(scooter);
+    }
+
+    public Uni<Scooter> patch(UUID scooterId, ScooterPatchDTO request) {
+        return scooterRepository
+                .findById(scooterId)
+                .onItem()
+                .ifNull()
+                .failWith(new NotFoundException("A scooter with provided id not present"))
+                .onItem()
+                .transform(scooter -> ScooterAdapter.fromScooterPatchDTO(request, scooter))
+                .call(scooterRepository::persist);
     }
 
 

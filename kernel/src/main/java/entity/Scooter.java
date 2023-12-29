@@ -72,12 +72,25 @@ public class Scooter {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public BigDecimal getBatteryLevel() {
         return batteryLevel;
     }
 
+    public void setBatteryLevel(BigDecimal batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
     public Location getLocation() {
         return location;
+    }
+
+    public void setLocation(String latitude, String longitude) {
+        this.location.latitude = latitude;
+        this.location.longitude = longitude;
     }
 
     public boolean isAvailable() {
@@ -105,8 +118,16 @@ public class Scooter {
             return latitude;
         }
 
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
         public String getLongitude() {
             return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
         }
     }
 

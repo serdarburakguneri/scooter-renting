@@ -1,10 +1,12 @@
 package resource;
 
+import dto.ScooterDTO;
 import entity.UserRole;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.vertx.core.json.JsonObject;
 import jakarta.ws.rs.core.MediaType;
+import java.util.UUID;
 import java.util.stream.Stream;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +59,7 @@ public class ScooterResourceTest extends IntegrationTest {
     @TestSecurity(user = "testUser", roles = {UserRole.USER})
     void testCreateScooterForRegularUsers() {
 
-        var requestBody = ScooterPayload.generate();
+        var requestBody = ScooterPayload.create();
 
         given()
                 .when()
@@ -72,7 +74,7 @@ public class ScooterResourceTest extends IntegrationTest {
     @DisplayName("POST should return 401 for non authenticated requests")
     void testCreateScooterWithoutAuthentication() {
 
-        var requestBody = ScooterPayload.generate();
+        var requestBody = ScooterPayload.create();
 
         given()
                 .when()
@@ -87,7 +89,7 @@ public class ScooterResourceTest extends IntegrationTest {
     @DisplayName("POST should return 201")
     @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     void testCreateScooter() {
-        var requestBody = ScooterPayload.generate();
+        var requestBody = ScooterPayload.create();
 
         given()
                 .when()
@@ -117,7 +119,7 @@ public class ScooterResourceTest extends IntegrationTest {
     @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
     void testListScootersForAdmins() {
 
-        var requestBody = ScooterPayload.generate();
+        var requestBody = ScooterPayload.create();
 
         given()
                 .when()
@@ -153,5 +155,63 @@ public class ScooterResourceTest extends IntegrationTest {
                 .body("size()", equalTo(1));
     }
      */
+
+    @Test
+    @DisplayName("PATCH should return 200 for admins")
+    @TestSecurity(user = "testUser", roles = {UserRole.ADMIN})
+    void testPatch() {
+
+        var scooterCreationRequest = ScooterPayload.create();
+
+        var scooterCreated = given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(scooterCreationRequest.toString())
+                .post("/scooter")
+                .then()
+                .statusCode(StatusCode.CREATED)
+                .extract()
+                .as(ScooterDTO.class);
+
+        var scooterPatchRequest = ScooterPayload.patch();
+
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(scooterPatchRequest.toString())
+                .patch("scooter/" + scooterCreated.id())
+                .then()
+                .statusCode(StatusCode.OK);
+    }
+
+    @Test
+    @DisplayName("PATCH should return 403 for non admin users")
+    @TestSecurity(user = "testUser", roles = {UserRole.USER})
+    void testPatchForNonAdminUsers() {
+
+        var scooterPatchRequest = ScooterPayload.patch();
+
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(scooterPatchRequest.toString())
+                .patch("scooter/" + UUID.randomUUID())
+                .then()
+                .statusCode(StatusCode.FORBIDDEN);
+    }
+
+    @Test
+    @DisplayName("PATCH should return 401 for non authenticated requests")
+    void testPatchWithoutAuthentication() {
+        var scooterPatchRequest = ScooterPayload.patch();
+
+        given()
+                .when()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(scooterPatchRequest.toString())
+                .patch("scooter/" + UUID.randomUUID())
+                .then()
+                .statusCode(StatusCode.UNAUTHORIZED);
+    }
 
 }
