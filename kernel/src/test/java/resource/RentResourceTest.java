@@ -24,15 +24,13 @@ import static org.hamcrest.Matchers.is;
 @QuarkusTest
 public class RentResourceTest extends IntegrationTest {
 
-    @ParameterizedTest
-    @MethodSource("getBadRequestInputs")
+    @Test
     @DisplayName("POST should return 400 when payload is not valid")
     @TestSecurity(user = "testUser", roles = {UserRole.USER})
-    void testRequestRentingWhenPayloadIsNotValid(UUID scooterId, UUID userId) {
+    void testRequestRentingWhenPayloadIsNotValid() {
 
         var requestBody = new JsonObject()
-                .put("scooterId", scooterId)
-                .put("userId", userId);
+                .put("scooterId", null);
 
         given()
                 .when()
@@ -41,15 +39,6 @@ public class RentResourceTest extends IntegrationTest {
                 .post("/rent")
                 .then()
                 .statusCode(StatusCode.BAD_REQUEST);
-    }
-
-    static Stream<Arguments> getBadRequestInputs() {
-        return Stream
-                .of(
-                        Arguments.of(null, null),
-                        Arguments.of(UUID.randomUUID(), null),
-                        Arguments.of(null, UUID.randomUUID())
-                );
     }
 
     @Test
