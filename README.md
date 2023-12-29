@@ -4,7 +4,7 @@ I am starting a hobby project that simulates a scooter renting service just for 
 
 I want to create myself some distributed system problems and solve them by playing with rabbitMQ.
 
-Each app have more information in their readme files. OpenAPI documents can also be found in the documentation folders.
+Each app will have more information in their readme files. OpenAPI documents can also be found in the documentation folders.
 With swagger editor, it should be easier to understand how REST endpoints work.
 
 
@@ -83,6 +83,7 @@ These are the things I am thinking of implementing:
 * An admin can modify the scooter registered.
 * A user can list all scooters. Each scooter has location information, so it would be nice to filter
 scooters within a geographic area.
+* A user should have card information to be able to unlock a scooter.
 * A user can rent and unlock a scooter.
 * A user can stop the ride and lock the scooter.
 * Whenever a ride ends, the payment service handles the transaction.
