@@ -63,9 +63,10 @@ After "docker-compose up" you should have a rabbitMQ running.
 
 This is the main service responsible for registering, listing, unlocking and locking the scooters and managing the rental history. 
 
-# IotServer
+# IotClient
 
-IOT server is responsible for communication with the scooters in the field. This is the service where I will simulate getting scooter information and send them some commands such as locking and unlocking etc.
+IOT client represents the application to run in Scooters. I am thinking of having the communication with RabbitMQ 
+so scooters should simply subscribe to the queue for commands and for sending their updates. 
 
 # Email
 
