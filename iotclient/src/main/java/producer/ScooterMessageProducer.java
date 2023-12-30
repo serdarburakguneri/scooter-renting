@@ -14,7 +14,7 @@ public class ScooterMessageProducer {
     @Channel("scooter-updated")
     Emitter<ScooterDTO> scooterUpdateChannel;
 
-    public Uni<Void> scooterUnlockRequested(ScooterDTO scooterDTO) {
+    public Uni<Void> scooterUpdated(ScooterDTO scooterDTO) {
         return Uni.createFrom().voidItem().invoke(() -> scooterUpdateChannel.send(scooterDTO));
     }
 
