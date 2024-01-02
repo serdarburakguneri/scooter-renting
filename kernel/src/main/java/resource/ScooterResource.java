@@ -155,7 +155,7 @@ public class ScooterResource {
     @Tag(name = "Scooter")
     @RolesAllowed({UserRole.ADMIN})
     public Uni<RestResponse<ScooterDTO>> patchLicense(@PathParam("id") UUID id, ScooterPatchDTO request) {
-        return scooterService.patch(id, request)
+        return scooterService.patchWithId(id, request)
                 .map(ScooterDTOAdapter::fromScooter)
                 .onItem()
                 .transform(scooterPatched -> RestResponse.status(Status.OK, scooterPatched));

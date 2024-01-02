@@ -4,9 +4,12 @@ I am starting a hobby project that simulates a scooter renting service just for 
 
 I want to create myself some distributed system problems and solve them by playing with rabbitMQ.
 
-Each app will have more information in their readme files. OpenAPI documents can also be found in the documentation folders.
-With swagger editor, it should be easier to understand how REST endpoints work.
+Each app will have more information in their readme files. 
 
+# Trying Rest Endpoints
+
+OpenAPI documents can be found in the documentation folders of each app.
+With swagger editor, it should be easy to understand how REST endpoints work.
 
 ![image info](documentation/how_to_use_openapi_docs.png)
 
@@ -44,10 +47,65 @@ validating the tokens and authorising endpoints.
 After "docker-compose up" you should have a keycloak running. 
 * Simply, create a new realm and name it "auth-server".
 * Change settings of the realm and enable user registration.
-* By using the "account" client, you should be able to see login page. (This page is a perfect login page candidate for the UI)
-* Create a new user. Later, we will use this user to create tokens etc. 
+* By using the "account" client, you should be able to see login page. (This page is a perfect login page candidate for the UI) (example: localhost:8180/realms/auth-server/protocol/openid-connect/auth?client_id=account-console)
+* Create a new user. Later, we will use this user to create tokens etc.
+* Create groups as "admins" and "users" and then create roles "ADMIN" and "USER" then assign these roles to the groups.
+* Add your test user to the admin group so it can use the rest endpoints with ADMIN role.
 
 ![image info](documentation/keycloak_signup.png)
+
+* Crete a client, name it scooter-renting, enable client authentication and authorisation. Using the client id and client secret, a token can be generated.
+
+
+To get a token for your user, simply run
+
+```
+curl -X POST \
+'http://localhost:8180/realms/auth-server/protocol/openid-connect/token' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-d 'grant_type=password&username=your_username&password=your_password&client_id=scooter-renting&client_secret=your_client_secret'
+```
+
+and you will receive a json like
+
+```
+{
+"access_token": "",
+"expires_in": 300,
+"refresh_expires_in": 1800,
+"refresh_token": "",
+"token_type": "Bearer",
+"id_token": "",
+"not-before-policy": 0,
+"session_state": "e52207db-66bb-414a-9191-44ac24b684a2",
+"scope": "openid profile email"
+}
+```
+
+Using the token as auth header will help using the API
+
+```
+curl --location 'http://localhost:8081/scooter' \
+--header 'Authorization: Bearer eyJhbG...'
+```
+
+```
+[
+    {
+        "id": "56ff36c1-b913-45f6-8fc3-d238569b6995",
+        "serialNumber": "ABCDE1234",
+        "brand": "Bird",
+        "model": "One",
+        "batteryLevel": 98.700,
+        "location": {
+            "latitude": "59.335444",
+            "longitude": "18.063669"
+        },
+        "status": "AVAILABLE"
+    }
+]
+```
+
 
 # RabbitMQ
 

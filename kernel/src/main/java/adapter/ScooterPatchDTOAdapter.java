@@ -8,7 +8,7 @@ public class ScooterPatchDTOAdapter {
 
     public static ScooterPatchDTO fromScooterDTO(ScooterDTO source) {
         return new ScooterPatchDTO(source.batteryLevel(),
-                new LocationDTO(source.locationDTO().latitude(), source.locationDTO().longitude()),
+                new LocationDTO(source.location().latitude(), source.location().longitude()),
                 source.status());
     }
 

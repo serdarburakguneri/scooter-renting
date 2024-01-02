@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public record ScooterDTO(
         String serialNumber,
         BigDecimal batteryLevel,
-        LocationDTO locationDTO,
+        LocationDTO location,
         String status) {
 
 }

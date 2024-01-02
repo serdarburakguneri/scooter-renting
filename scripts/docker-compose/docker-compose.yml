@@ -40,8 +40,8 @@ services:
     ports:
       - "5433:5432"
 
-  rent-postgres:
-    container_name: rent-postgres
+  kernel-postgres:
+    container_name: kernel-postgres
     image: "postgres:14.4"
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
@@ -49,12 +49,12 @@ services:
       interval: 10s
       retries: 10
     volumes:
-      - postgres_data:/var/lib/postgresql/rent-postgres/data
+      - postgres_data:/var/lib/postgresql/kernel-postgres/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: rent
-      POSTGRES_HOST: rent-postgres
+      POSTGRES_DB: kernel
+      POSTGRES_HOST: kernel-postgres
     networks:
       - local
     ports:

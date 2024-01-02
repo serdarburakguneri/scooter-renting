@@ -27,7 +27,7 @@ public class ScooterService {
         this.scooterStatusService = scooterStatusService;
     }
 
-    @Scheduled(every = "30s")
+    @Scheduled(every = "10s")
     public Uni<Void> updateMe() {
         var batteryLevelResult = sensorReaderService.readBatteryLevel();
         var locationResult = sensorReaderService.readLocation();

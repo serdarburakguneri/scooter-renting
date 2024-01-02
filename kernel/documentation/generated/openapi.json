@@ -299,7 +299,7 @@
           "batteryLevel" : {
             "type" : "number"
           },
-          "locationDTO" : {
+          "location" : {
             "$ref" : "#/components/schemas/LocationDTO"
           },
           "status" : {

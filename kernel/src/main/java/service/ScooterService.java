@@ -5,7 +5,6 @@ import adapter.ScooterDTOAdapter;
 import dto.ScooterCreationDTO;
 import dto.ScooterPatchDTO;
 import entity.Scooter;
-import entity.ScooterStatus;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -82,7 +81,7 @@ public class ScooterService {
         return scooterMessageProducer.scooterUnlockRequested(scooterDTO).replaceWith(scooter);
     }
 
-    public Uni<Scooter> patch(UUID scooterId, ScooterPatchDTO request) {
+    public Uni<Scooter> patchWithId(UUID scooterId, ScooterPatchDTO request) {
         return scooterRepository
                 .findById(scooterId)
                 .onItem()
@@ -93,6 +92,16 @@ public class ScooterService {
                 .call(scooterRepository::persist);
     }
 
+    public Uni<Scooter> patchWithSerialNumber(String serialNumber, ScooterPatchDTO request) {
+        return scooterRepository
+                .findBySerialNumber(serialNumber)
+                .onItem()
+                .ifNull()
+                .failWith(new NotFoundException("A scooter with provided serial number is not present"))
+                .onItem()
+                .transform(scooter -> ScooterAdapter.fromScooterPatchDTO(request, scooter))
+                .call(scooterRepository::persist);
+    }
 
     //TODO: filtering is a good idea
     public Uni<List<Scooter>> list() {

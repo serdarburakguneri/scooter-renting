@@ -21,7 +21,10 @@ public class SensorReaderService {
     }
 
     public Uni<Location> readLocation() {
-        return Uni.createFrom().item(simulationTrip.pop());
+        return Uni.createFrom()
+                .item(simulationTrip.isEmpty() ?
+                        new Location("59.335444", "18.063669")
+                        : simulationTrip.pop());
     }
 
     private Stack<Location> simulationTrip() {

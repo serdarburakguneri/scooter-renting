@@ -25,7 +25,7 @@ public class ScooterMessageConsumer {
     public Uni<Void> consumeScooterUpdate(JsonObject message) {
         var scooter = message.mapTo(ScooterDTO.class);
         var scooterPatchDTO = ScooterPatchDTOAdapter.fromScooterDTO(scooter);
-        return scooterService.patch(scooter.id(), scooterPatchDTO).replaceWithVoid();
+        return scooterService.patchWithSerialNumber(scooter.serialNumber(), scooterPatchDTO).replaceWithVoid();
     }
 
 }
