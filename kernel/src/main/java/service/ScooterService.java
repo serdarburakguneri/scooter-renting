@@ -19,14 +19,11 @@ import repository.ScooterRepository;
 public class ScooterService {
 
     private final ScooterRepository scooterRepository;
-    private final ScooterMessageProducer scooterMessageProducer;
-    public static final long MIN_BATTERY_LEVEL_FOR_RIDE = 5L;
+
 
     @Inject
-    public ScooterService(ScooterRepository scooterRepository,
-            ScooterMessageProducer scooterMessageProducer) {
+    public ScooterService(ScooterRepository scooterRepository) {
         this.scooterRepository = scooterRepository;
-        this.scooterMessageProducer = scooterMessageProducer;
     }
 
     public Uni<Scooter> findById(UUID id) {
@@ -43,42 +40,14 @@ public class ScooterService {
                 .call(scooterRepository::persist);
     }
 
-    public Uni<Scooter> validateUnlocking(UUID id) {
-        return findById(id)
+    public Uni<Scooter> update(Scooter scooter) {
+        return scooterRepository
+                .findById(scooter.getId())
                 .onItem()
                 .ifNull()
-                .failWith(new NotFoundException("A scooter with provided id could not be found."))
-                .onItem()
-                .call(scooter -> {
-                    if (!scooter.isAvailable()) {
-                        return Uni.createFrom()
-                                .failure(new RuntimeException("The scooter is not available for unlocking."));
-                    }
-                    return Uni.createFrom().item(scooter);
-                })
-                .call(scooter -> {
-                    if (scooter.getBatteryLevel().longValue() < MIN_BATTERY_LEVEL_FOR_RIDE) {
-                        return Uni.createFrom()
-                                .failure(new RuntimeException(
-                                        "The battery level of the scooter is not suitable for driving"));
-                    }
-                    return Uni.createFrom().item(scooter);
-                });
-    }
-
-    public Uni<Scooter> requestUnlock(UUID id) {
-        return findById(id)
-                .map(scooter -> {
-                    scooter.requestUnLock();
-                    return scooter;
-                })
-                .call(this::publishUnlockRequested)
+                .failWith(new NotFoundException("A scooter with provided id not present"))
+                .replaceWith(scooter)
                 .call(scooterRepository::persist);
-    }
-
-    private Uni<Scooter> publishUnlockRequested(Scooter scooter) {
-        var scooterDTO = ScooterDTOAdapter.fromScooter(scooter);
-        return scooterMessageProducer.scooterUnlockRequested(scooterDTO).replaceWith(scooter);
     }
 
     public Uni<Scooter> patchWithId(UUID scooterId, ScooterPatchDTO request) {
