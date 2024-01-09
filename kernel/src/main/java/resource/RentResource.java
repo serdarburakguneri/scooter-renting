@@ -62,8 +62,7 @@ public class RentResource {
                                     value =
                                             """
                                                     {
-                                                        "scooterId": "dd4b91ea-3b80-4961-9bc3-1d6bc7f3f7cf",
-                                                        "userId": "dd4b91ea-3b80-4961-9bc3-1d6bc7f3f7cf"                         
+                                                        "scooterId": "dd4b91ea-3b80-4961-9bc3-1d6bc7f3f7cf"                                                   
                                                     }
                                                     """
                             )
