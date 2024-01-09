@@ -10,27 +10,30 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import producer.ScooterMessageProducer;
 
 @ApplicationScoped
-public class ScooterService {
+public class CommunicationService {
 
     @ConfigProperty(name = "device.serial-number")
     String serialNumber;
     private final ScooterMessageProducer scooterMessageProducer;
-    private final SensorReaderService sensorReaderService;
+    private final LocationService locationService;
+    private final BatteryLevelService batteryLevelService;
     private final ScooterStatusService scooterStatusService;
 
     @Inject
-    public ScooterService(ScooterMessageProducer scooterMessageProducer,
-            SensorReaderService sensorReaderService,
+    public CommunicationService(ScooterMessageProducer scooterMessageProducer,
+            LocationService locationService,
+            BatteryLevelService batteryLevelService,
             ScooterStatusService scooterStatusService) {
         this.scooterMessageProducer = scooterMessageProducer;
-        this.sensorReaderService = sensorReaderService;
+        this.locationService = locationService;
+        this.batteryLevelService = batteryLevelService;
         this.scooterStatusService = scooterStatusService;
     }
 
-    @Scheduled(every = "10s")
+    @Scheduled(every = "20s")
     public Uni<Void> updateMe() {
-        var batteryLevelResult = sensorReaderService.readBatteryLevel();
-        var locationResult = sensorReaderService.readLocation();
+        var batteryLevelResult = batteryLevelService.readBatteryLevel();
+        var locationResult = locationService.readLocation();
         var statusResult = scooterStatusService.getStatus();
 
         return Uni.combine()
@@ -41,7 +44,8 @@ public class ScooterService {
                 .transform(tuple -> new ScooterDTO(
                         serialNumber,
                         tuple.getItem1(),
-                        new LocationDTO(tuple.getItem2().latitude(), tuple.getItem2().longitude()),
+                        new LocationDTO(tuple.getItem2().latitude(),
+                                tuple.getItem2().longitude()),
                         tuple.getItem3().name()))
                 .onItem()
                 .call(scooterMessageProducer::scooterUpdated)

@@ -7,17 +7,19 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.resteasy.reactive.common.NotImplementedYet;
-import service.ScooterService;
+import service.CommunicationService;
 
 @ApplicationScoped
 public class ScooterMessageConsumer {
 
-    private final ScooterService scooterService;
+    private final CommunicationService communicationService;
 
     @Inject
-    public ScooterMessageConsumer(ScooterService scooterService) {
-        this.scooterService = scooterService;
+    public ScooterMessageConsumer(CommunicationService communicationService) {
+        this.communicationService = communicationService;
     }
+
+    // Now the problem is how to receive device specific messages. :)
 
     @Incoming("scooter-unlock-requested")
     public Uni<Void> consumeScooterUpdate(JsonObject message) {

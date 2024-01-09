@@ -3,22 +3,12 @@ package service;
 import entity.Location;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.math.BigDecimal;
 import java.util.Stack;
 
-/*
- For now, I am simulating. Maybe I work with real devices one day :)
- */
 @ApplicationScoped
-public class SensorReaderService {
+public class LocationService {
 
-    private double initialBatterLevel = 100;
     private final Stack<Location> simulationTrip = simulationTrip();
-
-    public Uni<BigDecimal> readBatteryLevel() {
-        initialBatterLevel -= 0.1;
-        return Uni.createFrom().item(BigDecimal.valueOf(initialBatterLevel));
-    }
 
     public Uni<Location> readLocation() {
         return Uni.createFrom()
