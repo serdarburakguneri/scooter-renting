@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import producer.ScooterMessageProducer;
 import repository.RentalHistoryRepository;
+import test.ScooterTestObject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
@@ -52,14 +53,7 @@ public class RentServiceTest {
         var userId = UUID.randomUUID().toString();
         var request = new RentRequestDTO(scooterId);
 
-        var scooter = new Scooter.Builder()
-                .withSerialNumber("1234ABC")
-                .withBrand("Bird")
-                .withModel("One")
-                .withStatus(ScooterStatus.AVAILABLE.name())
-                .withBatteryLevel(BigDecimal.valueOf(90))
-                .withLocation("0", "0")
-                .build();
+        var scooter = ScooterTestObject.get();
 
         when(scooterService.findById(scooterId))
                 .thenReturn(Uni.createFrom().item(scooter));
@@ -101,14 +95,8 @@ public class RentServiceTest {
         var userId = UUID.randomUUID().toString();
         var request = new RentRequestDTO(scooterId);
 
-        var scooter = new Scooter.Builder()
-                .withSerialNumber("1234ABC")
-                .withBrand("Bird")
-                .withModel("One")
-                .withStatus(ScooterStatus.AVAILABLE.name())
-                .withBatteryLevel(BigDecimal.valueOf(RentService.MIN_BATTERY_LEVEL_FOR_RIDE - 1L))
-                .withLocation("0", "0")
-                .build();
+        var scooter = ScooterTestObject.get();
+        scooter.setBatteryLevel(BigDecimal.valueOf(RentService.MIN_BATTERY_LEVEL_FOR_RIDE - 1L));
 
         when(scooterService.findById(scooterId))
                 .thenReturn(Uni.createFrom().item(scooter));
@@ -129,14 +117,8 @@ public class RentServiceTest {
         var userId = UUID.randomUUID().toString();
         var request = new RentRequestDTO(scooterId);
 
-        var scooter = new Scooter.Builder()
-                .withSerialNumber("1234ABC")
-                .withBrand("Bird")
-                .withModel("One")
-                .withStatus(scooterStatus.name())
-                .withBatteryLevel(BigDecimal.valueOf(90))
-                .withLocation("0", "0")
-                .build();
+        var scooter = ScooterTestObject.get();
+        scooter.setStatus(scooterStatus.name());
 
         when(scooterService.findById(scooterId))
                 .thenReturn(Uni.createFrom().item(scooter));
@@ -156,14 +138,7 @@ public class RentServiceTest {
         var userId = UUID.randomUUID().toString();
         var request = new RentRequestDTO(scooterId);
 
-        var scooter = new Scooter.Builder()
-                .withSerialNumber("1234ABC")
-                .withBrand("Bird")
-                .withModel("One")
-                .withStatus(ScooterStatus.AVAILABLE.name())
-                .withBatteryLevel(BigDecimal.valueOf(90))
-                .withLocation("0", "0")
-                .build();
+        var scooter = ScooterTestObject.get();
 
         when(scooterService.findById(scooterId))
                 .thenReturn(Uni.createFrom().item(scooter));
@@ -182,6 +157,5 @@ public class RentServiceTest {
         verify(scooterMessageProducer, times(1)).scooterUnlockRequested(messagingCaptor.capture());
         assertEquals(messagingCaptor.getValue().serialNumber(), scooter.getSerialNumber());
     }
-
 
 }

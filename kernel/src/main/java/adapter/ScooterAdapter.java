@@ -6,6 +6,7 @@ import entity.Scooter;
 import entity.ScooterStatus;
 import java.math.BigDecimal;
 import adapter.util.PatchUtil;
+import java.util.Objects;
 
 public class ScooterAdapter {
 
@@ -24,9 +25,11 @@ public class ScooterAdapter {
         PatchUtil.updateIfChanged(scooter::setBatteryLevel, request.batteryLevel(), scooter::getBatteryLevel);
         PatchUtil.updateIfChanged(scooter::setStatus, request.status(), scooter::getStatus);
 
-        var location = scooter.getLocation();
-        PatchUtil.updateIfChanged(location::setLatitude, request.location().latitude(), location::getLatitude);
-        PatchUtil.updateIfChanged(location::setLongitude, request.location().longitude(), location::getLongitude);
+        if (Objects.nonNull(request.location())) {
+            var location = scooter.getLocation();
+            PatchUtil.updateIfChanged(location::setLatitude, request.location().latitude(), location::getLatitude);
+            PatchUtil.updateIfChanged(location::setLongitude, request.location().longitude(), location::getLongitude);
+        }
 
         return scooter;
     }
